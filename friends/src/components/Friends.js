@@ -4,9 +4,9 @@ import React from "react";
 const Friends = props => {
     return(
         <div>
-            {props.name}
-            {props.age}
-            {props.email}
+            <h2>{props.name}</h2>
+            <h4>{props.age}</h4>
+            <h5>{props.email}</h5>
         </div>
     )
 }
