@@ -11,6 +11,8 @@ const FriendsList =() => {
     const [myFriends, setMyFriends] = useState([]);
     const [editFriend, setEditFriend] = useState({name: "", age: "", email: "", id: ""})
 
+    const [editing, setEditing] = useState(false)
+
     useEffect(() => {
         loadFriends()
     },[])
@@ -33,6 +35,21 @@ const FriendsList =() => {
         id: Date.now()
     };
 
+    let changedFriend = {
+        name: editFriend.name,
+        age: editFriend.age,
+        email: editFriend.email,
+        id: editFriend.id
+    };
+
+    const resetField = () => {
+        setEditFriend({
+            name: "",
+            email: "",
+            age: ""
+        })
+    }
+
     const changeHandle = e => {
         setEditFriend({
             ...editFriend,
@@ -40,14 +57,41 @@ const FriendsList =() => {
         })
     };
 
-    const handleAddSubmit = e => {
-        e.preventDefault();
-        addFriend();
+    const editChangeHandle = friend => {
+        setEditing(!editing);
+        setEditFriend({ id: friend.id, name: friend.name, age: friend.age, email: friend.email  })
     }
+
+    const handleAddSubmit = e => {
+        if(editing) {
+            e.preventDefault();
+            modifyFriend(editFriend.id)
+            resetField();
+        } else {
+            e.preventDefault();
+            addFriend();
+            resetField();
+        }
+       
+    }
+
+    
 
     const addFriend = () => {
         axiosWithAuth()
             .post("/friends", newFriend)
+            .then(res => {
+                console.log(res);
+                loadFriends();
+            })
+            .catch(err =>
+                console.log(err)    
+            )
+    }
+
+    const modifyFriend = friend => {
+        axiosWithAuth()
+            .put(`/friends/${friend}`, changedFriend)
             .then(res => {
                 console.log(res);
                 loadFriends();
@@ -64,9 +108,11 @@ const FriendsList =() => {
             {myFriends.map(friend =>(
                 <Friends 
                     key={friend.id}
+                    friend={friend}
                     name={friend.name}
                     age={friend.age}
                     email={friend.email}
+                    editChangeHandle={editChangeHandle}
                 />
               ))}
             

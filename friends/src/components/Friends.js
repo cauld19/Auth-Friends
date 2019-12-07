@@ -7,6 +7,12 @@ const Friends = props => {
             <h2>{props.name}</h2>
             <h4>{props.age}</h4>
             <h5>{props.email}</h5>
+            <input
+                name="friendSelect"
+                type="checkbox"
+                checked={null}
+                onChange={() => props.editChangeHandle(props.friend)}
+            />
         </div>
     )
 }
