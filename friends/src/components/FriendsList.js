@@ -12,15 +12,18 @@ const FriendsList =() => {
     const [editFriend, setEditFriend] = useState({name: "", age: "", email: "", id: ""})
 
     useEffect(() => {
-        axiosWithAuth()
-            .get('/friends')
-            .then(res => {
-                console.log(res.data)
-                setMyFriends(res.data)
-            })
-            .catch(err => console.log(err));
+        loadFriends()
     },[])
 
+    const loadFriends = () => {
+            axiosWithAuth()
+                .get('/friends')
+                .then(res => {
+                    console.log(res.data)
+                    setMyFriends(res.data)
+                })
+                .catch(err => console.log(err));
+    }
     
 
     let newFriend = {
@@ -47,6 +50,7 @@ const FriendsList =() => {
             .post("/friends", newFriend)
             .then(res => {
                 console.log(res);
+                loadFriends();
             })
             .catch(err =>
                 console.log(err)    
