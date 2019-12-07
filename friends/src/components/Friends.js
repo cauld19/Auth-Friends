@@ -13,6 +13,7 @@ const Friends = props => {
                 checked={null}
                 onChange={() => props.editChangeHandle(props.friend)}
             />
+            <button onClick={() => {props.deleteFriend(props.friend.id)}}>Delete</button>
         </div>
     )
 }

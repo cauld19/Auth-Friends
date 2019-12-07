@@ -101,6 +101,18 @@ const FriendsList =() => {
             )
     }
 
+    const deleteFriend = friend => {
+        axiosWithAuth()
+            .delete(`/friends/${friend}`)
+            .then(res => {
+                console.log(res);
+                loadFriends();
+            })
+            .catch(err =>
+                console.log(err)    
+            )
+    }
+
     
 
     return(
@@ -113,6 +125,8 @@ const FriendsList =() => {
                     age={friend.age}
                     email={friend.email}
                     editChangeHandle={editChangeHandle}
+                    editing={editing}
+                    deleteFriend={deleteFriend}
                 />
               ))}
             
